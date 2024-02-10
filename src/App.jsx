@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import UserCard from './components/UserCard';
+import Loader from './components/Loader';
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -18,16 +19,24 @@ function App() {
     fetchData();
   }, []);
 
+  const isEmpty = Array.isArray(users) && users.length === 0;
+
   return (
-    <div className='py-12'>
-      <div className='container px-2 sm:px-8'>
-        <div className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
-          {users.map((user) => (
-            <UserCard key={user?.id} user={user} />
-          ))}
+    <>
+      {isEmpty ? (
+        <Loader />
+      ) : (
+        <div className='py-12'>
+          <div className='container px-2 md:px-8'>
+            <div className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
+              {users.map((user) => (
+                <UserCard key={user?.id} user={user} />
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 
